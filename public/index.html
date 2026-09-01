@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Relayterm, a neutral workspace for command-line agents</title>
+    <meta name="description" content="Apache 2.0 open-source workspace with persistent tasks, real terminal sessions, and structured handovers for current and future CLI coding agents.">
+    <link rel="canonical" href="https://relayterm.com/">
+    <meta name="theme-color" content="#0b0f0e">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Relayterm">
+    <meta property="og:title" content="The workspace stays. The agents rotate.">
+    <meta property="og:description" content="An open-source, agent-neutral workspace for command-line coding agents. Licensed under Apache 2.0.">
+    <meta property="og:url" content="https://relayterm.com/">
+    <meta property="og:image" content="https://relayterm.com/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Relayterm terminal-inspired project card">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The workspace stays. The agents rotate.">
+    <meta name="twitter:description" content="An open-source, agent-neutral workspace for command-line coding agents. Licensed under Apache 2.0.">
+    <meta name="twitter:image" content="https://relayterm.com/og-image.png">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="wordmark" href="#top" aria-label="Relayterm home"><span aria-hidden="true"></span>Relayterm</a>
+        <nav aria-label="Primary navigation">
+          <a href="#problem">Problem</a>
+          <a href="#model">Model</a>
+          <a href="#scope">Scope</a>
+          <a href="#principles">Principles</a>
+        </nav>
+        <a class="status-link" href="#status"><span aria-hidden="true"></span>Status: pre-release</a>
+      </div>
+    </header>
+
+    <main id="content">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="shell hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">local-first <i aria-hidden="true">·</i> agent-neutral <i aria-hidden="true">·</i> tui-first</p>
+            <h1 id="hero-title">The workspace stays.<br>The agents rotate.</h1>
+            <p class="lead">Relayterm is a persistent, provider-neutral workspace for command-line coding agents. Claude Code, Codex, OpenCode, and tools that do not exist yet can enter a project, take a task, leave a record, and hand the work on.</p>
+            <p class="lead-secondary">It does not fuse agents into a new model. It gives them durable surroundings: real terminal sessions, shared project state, explicit task ownership, and structured handovers.</p>
+            <div class="hero-actions">
+              <a class="primary-link" href="#status">Read the current scope <span aria-hidden="true">↓</span></a>
+              <span>Executable planned as <code>rt</code></span>
+            </div>
+          </div>
+
+          <div class="terminal" aria-label="Illustrative Relayterm terminal output">
+            <div class="terminal-bar"><span></span><span></span><span></span><strong>rt</strong></div>
+            <div class="terminal-body">
+              <p><b>$</b> rt<span class="cursor" aria-hidden="true"></span></p>
+              <p><em>relayterm</em>&nbsp; workspace&nbsp; ~/src/ledger</p>
+              <p>sessions&nbsp; <strong>2 live</strong>&nbsp;&nbsp;&nbsp; tasks&nbsp; <strong>1 claimed</strong>&nbsp; 3 ready</p>
+              <p>agent&nbsp;&nbsp;&nbsp;&nbsp; opencode&nbsp;&nbsp; task&nbsp;&nbsp; RT-14&nbsp; <q>normalize csv dates</q></p>
+              <p class="terminal-section">[handover]</p>
+              <dl>
+                <dt>verified</dt><dd>fixture tests pass on sample.csv</dd>
+                <dt>next</dt><dd>resume RT-14 in the existing session</dd>
+                <dt>owner</dt><dd><mark>unclaimed</mark></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="problem" aria-labelledby="problem-title">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="section-index">01 / The missing layer</p>
+            <h2 id="problem-title">Context should not die with the session</h2>
+            <p>Coding agents are capable. Their operating context is fragmented.</p>
+          </div>
+          <div class="problem-grid">
+            <article><span>01</span><h3>Session amnesia</h3><p>Each agent keeps its own conventions and context window. When the process exits, the useful part of the afternoon often exits with it.</p></article>
+            <article><span>02</span><h3>Tool lock-in by accident</h3><p>Work settles inside a vendor chat, a particular pane, or a private transcript. The repository does not know.</p></article>
+            <article><span>03</span><h3>Blind succession</h3><p>A newly arrived agent cannot reliably see what was tried, what changed, what remains, or how the last change was verified.</p></article>
+            <article><span>04</span><h3>Leaky handovers</h3><p>Informal notes pasted into public repositories tend to include secrets, home paths, hostnames, and conversation scraps that never should have shipped.</p></article>
+          </div>
+          <p class="section-close">The workspace belongs to the project, not the agent.</p>
+        </div>
+      </section>
+
+      <section class="section" id="model" aria-labelledby="model-title">
+        <div class="shell model-layout">
+          <div class="section-heading sticky-heading">
+            <p class="section-index">02 / Neutral model</p>
+            <h2 id="model-title">Four nouns, on purpose</h2>
+            <p>A small common contract keeps provider differences at the boundary.</p>
+          </div>
+          <ol class="model-list">
+            <li><span>01</span><div><h3>Agent definition</h3><p>A named command with declared capabilities. It describes how an agent can participate without making that provider part of the core model.</p></div></li>
+            <li><span>02</span><div><h3>Agent instance</h3><p>A supervised process with a real PTY, a working directory, a lifecycle, and optionally a claimed task.</p></div></li>
+            <li><span>03</span><div><h3>Task</h3><p>A neutral unit of work with state, scope, dependencies, acceptance notes, and an ownership history.</p></div></li>
+            <li><span>04</span><div><h3>Handover</h3><p>A structured record of current state, relevant files, decisions, open questions, verification, and the recommended next action.</p></div></li>
+          </ol>
+          <p class="model-note">Provider instruction files such as <code>AGENTS.md</code> and <code>CLAUDE.md</code> can coexist. They do not replace shared task and handover state.</p>
+        </div>
+      </section>
+
+      <section class="section" id="scope" aria-labelledby="scope-title">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="section-index">03 / First release boundary</p>
+            <h2 id="scope-title">A narrow first cut</h2>
+            <p>Dependable continuity comes before autonomous coordination.</p>
+          </div>
+          <div class="scope-grid">
+            <article class="scope-card in-scope">
+              <p class="scope-label"><span></span>In the first cut</p>
+              <ul>
+                <li>Persistent workspace rooted in a project</li>
+                <li>Core daemon that owns state and sessions</li>
+                <li>TUI client connected to that core</li>
+                <li>Multiple real terminal panes</li>
+                <li>Neutral agent registry</li>
+                <li>Task queue with a visible lifecycle</li>
+                <li>Structured handovers and local audit events</li>
+                <li>Optional Git worktrees</li>
+                <li>Recovery after TUI or SSH disconnects, within MVP limits</li>
+              </ul>
+            </article>
+            <article class="scope-card out-scope">
+              <p class="scope-label"><span></span>Not in the first cut</p>
+              <ul>
+                <li>Desktop, product web, or mobile client</li>
+                <li>Mandatory cloud account</li>
+                <li>Custom model or inference gateway</li>
+                <li>Autonomous agent swarms</li>
+                <li>Live collaborative editing</li>
+                <li>Internet-exposed multi-user daemon</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="principles" aria-labelledby="principles-title">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="section-index">04 / Principles</p>
+            <h2 id="principles-title">Built around the work, not the vendor</h2>
+          </div>
+          <div class="principles-grid">
+            <article><h3>Project ownership over agent ownership</h3><p>Tasks, decisions, progress, and handovers belong to the workspace. An agent contributes to them but never becomes their exclusive source of truth.</p></article>
+            <article><h3>Neutrality by design</h3><p>The core does not require a particular provider, subscription, or transcript format. Provider support stays in replaceable adapters.</p></article>
+            <article><h3>Real terminals, not simulated consoles</h3><p>Agents run inside real pseudo-terminal sessions with native shell behavior, resizing, signals, colors, and their own interactive authentication flows.</p></article>
+            <article><h3>Local-first and inspectable</h3><p>Core functionality works on a developer-controlled machine without a hosted service. State and coordination artifacts remain documented and recoverable.</p></article>
+            <article><h3>Explicit coordination</h3><p>Task claims, state transitions, handovers, and conflicts stay visible and attributable. Coordination does not hide in an unstructured chat transcript.</p></article>
+            <article><h3>Safe public defaults</h3><p>No default telemetry, no provider secrets, and no raw private context in public artifacts. Export is deliberate and supports review before publication.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section status-section" id="status" aria-labelledby="status-title">
+        <div class="shell status-grid">
+          <div>
+            <p class="section-index">05 / Status</p>
+            <h2 id="status-title">This domain is a placeholder with opinions</h2>
+            <p class="status-lead">relayterm.com is an interim public face, not the product. Relayterm is in early definition and implementation as a local control plane for agent-assisted development.</p>
+            <p>There is no download because there is not yet a public release. There is no launch-shaped waiting list and no account to create. This site has no telemetry and talks to no agent API. The real work happens in the repository and on the user's machine.</p>
+            <p>Relayterm is open source and licensed under the Apache License 2.0. The implementation, project vision, and contribution history live in the public project repository.</p>
+            <div class="source-links" aria-label="Project links">
+              <a class="source-link" href="https://github.com/fpinero/relayterm" rel="noreferrer">Source <span aria-hidden="true">↗</span></a>
+              <a class="source-link" href="https://github.com/fpinero/relayterm/blob/main/LICENSE" rel="noreferrer">Apache 2.0 <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+          <dl class="metadata">
+            <div><dt>product</dt><dd>Relayterm</dd></div>
+            <div><dt>command</dt><dd>rt</dd></div>
+            <div><dt>surfaces</dt><dd>TUI first, other clients later</dd></div>
+            <div><dt>hosts</dt><dd>Linux, macOS, Windows</dd></div>
+            <div><dt>network</dt><dd>local and SSH; no hosted control plane in MVP</dd></div>
+            <div><dt>privacy</dt><dd>no provider secrets; no default telemetry</dd></div>
+            <div><dt>license</dt><dd>Apache License 2.0</dd></div>
+            <div><dt>source</dt><dd>github.com/fpinero/relayterm</dd></div>
+            <div><dt>website</dt><dd>informational only; the tool does not depend on it</dd></div>
+          </dl>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="shell footer-inner">
+        <p><span class="footer-mark" aria-hidden="true"></span>© 2026 Relayterm</p>
+        <p>Open source under Apache 2.0.</p>
+        <div class="footer-links">
+          <a href="https://github.com/fpinero/relayterm" rel="noreferrer">Source <span aria-hidden="true">↗</span></a>
+          <a href="https://github.com/fpinero/relayterm/blob/main/LICENSE" rel="noreferrer">License <span aria-hidden="true">↗</span></a>
+          <a href="https://github.com/fpinero/web-relayterm" rel="noreferrer">Website source <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
